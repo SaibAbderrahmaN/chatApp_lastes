@@ -18,6 +18,7 @@ import {
   StyledInputBase,
 } from "../../components/Search";
 import CreateGroup from "../../sections/Dashboard/CreateGroup";
+import { useSelector } from "react-redux";
 
 const Group = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -29,6 +30,8 @@ const Group = () => {
     setOpenDialog(true);
   }
   const theme = useTheme();
+  const {Admins , Drivers ,Clients} =useSelector((state)=>state.app)
+
   return (
     <>
       <Stack direction="row" sx={{ width: "100%" }}>
@@ -87,15 +90,22 @@ const Group = () => {
                     admins
                   </Typography>
                   {/* Chat List */}
-                  {ChatList.filter((el) => el.pinned).map((el, idx) => {
-                    return <ChatElement {...el} />;
+                  {Admins.map((el, idx) => {
+                    return <ChatElement {...el}  key={idx}/>;
                   })}
                   <Typography variant="subtitle2" sx={{ color: "#676667" }}>
-                    All Chats
+                    Drivers
                   </Typography>
                   {/* Chat List */}
-                  {ChatList.filter((el) => !el.pinned).map((el, idx) => {
-                    return <ChatElement {...el} />;
+                  {Drivers.map((el, idx) => {
+                    return <ChatElement {...el} key={idx} />;
+                  })}
+                         <Typography variant="subtitle2" sx={{ color: "#676667" }}>
+                    Clients
+                  </Typography>
+                  {/* Chat List */}
+                  {Clients.map((el, idx) => {
+                    return <ChatElement {...el} key={idx} />;
                   })}
                 </Stack>
               </SimpleBarStyle>

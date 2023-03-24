@@ -13,6 +13,7 @@ const initialState = {
   user_id: null,
   email: "",
   error: false,
+  type:null
 };
 
 const slice = createSlice({
@@ -27,6 +28,9 @@ const slice = createSlice({
       state.isLoggedIn = action.payload.isLoggedIn;
       state.token = action.payload.token;
       state.user_id = action.payload.user_id;
+      state.type = action.payload.type;
+      state.user = action.payload.user;
+      state.email = action.payload.email;
     },
     signOut(state, action) {
       state.isLoggedIn = false;
@@ -47,14 +51,7 @@ export default slice.reducer;
 
 export function LoginUser(formValues) {
   return async (dispatch, getState) => {
-    console.log('done')
-    // Make API call here
-
     dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
-
-
-
-
     await axios
       .post(
         "/driver/login",
@@ -73,10 +70,14 @@ export function LoginUser(formValues) {
           slice.actions.logIn({
             isLoggedIn: true,
             token: response.data.token,
-            user_id: response.data.user_id,
+            user_id: response.data.id,
+            type: response.data.type
+            ,user : response.data.fullName
+            ,email : response.data.email
           })
         );
-        window.localStorage.setItem("user_id", response.data.user_id);
+        window.localStorage.setItem("user_id", response.data.id);
+        window.localStorage.setItem("type", response.data.type);
         dispatch(
           showSnackbar({ severity: "success", message: response.data.message })
         );

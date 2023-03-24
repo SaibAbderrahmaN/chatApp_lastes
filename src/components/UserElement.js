@@ -96,15 +96,17 @@ const UserElement = ({
           </Stack>
         </Stack>
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
-          <Button
+          <IconButton
             onClick={() => {
-              socket.emit("friend_request", { to: id, from: user_id }, () => {
+              socket.emit("join-room", { to: id, from: user_id ,name:"abderrahman"}, () => {
                 alert("request sent");
+                console.log("join-room")
               });
             }}
           >
-            Send Request
-          </Button>
+            <Chat />
+          
+          </IconButton>
         </Stack>
       </Stack>
     </StyledChatBox>

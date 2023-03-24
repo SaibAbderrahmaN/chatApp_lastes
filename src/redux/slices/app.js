@@ -151,9 +151,7 @@ export function FetchAdmins() {
 export function FetchClient() {
   return async (dispatch, getState) => {
     
-    console.log("hello")
     socket.on("ClientsChat",  async(data) => {
-       await console.log(data)
        await dispatch(slice.actions.updateClients({ Clients: data }));
      });
     };

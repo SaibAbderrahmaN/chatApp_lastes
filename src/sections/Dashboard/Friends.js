@@ -121,7 +121,6 @@ const Friends = ({ open, handleClose }) => {
           <Tab label="drivers" />
           <Tab label="admins" />
           <Tab label="Clients" />
-          <Tab label="Requests" />
         </Tabs>
       </Stack>
       <DialogContent>
@@ -137,8 +136,6 @@ const Friends = ({ open, handleClose }) => {
 
                 case 2: // display request in this list
                   return <ClientList />;
-                case 3: // display request in this list
-                  return <RequestsList />;
 
                 default:
                   break;

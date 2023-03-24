@@ -4,7 +4,7 @@ let socket;
 
 const connectSocket = (user_id) => {
   socket = io("http://localhost:3000", {
-    query: `user_id=${window.localStorage.getItem("user_id")}`,
+    query: {user_id:window.localStorage.getItem("user_id") , type:window.localStorage.getItem("type")},
   });
 } // Add this -- our server will run on port 4000, so we connect to it from here
 
