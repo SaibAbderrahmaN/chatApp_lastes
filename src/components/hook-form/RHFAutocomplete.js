@@ -10,10 +10,13 @@ RHFAutocomplete.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   helperText: PropTypes.node,
+  id: PropTypes.string,
+
 };
 
-export default function RHFAutocomplete({name, label, helperText, ...other }) {
+export default function RHFAutocomplete({name, label, helperText,...other }) {
   const { control, setValue } = useFormContext();
+  
 
   return (
     <Controller
@@ -31,6 +34,16 @@ export default function RHFAutocomplete({name, label, helperText, ...other }) {
               {...params}
             />
           )}
+          getOptionSelected={(option, value) =>
+               (option.id_driver && value?.id_driver && option.id_driver === value?.id_driver) || 
+               (option.id_admin && value.id_admin && option.id_admin === value.id_admin) || 
+               (option.id_client && value.id_client && option.id_client === value.id_client)}
+
+          
+             getOptionLabel={(option) =>
+               option.name + (option.id_driver ? " (Driver)" : "") + (option.id_admin ? " (Admin)" : "") + (option.id_client ? " (Client)" : "")
+             }
+
           {...other}
         />
       )}

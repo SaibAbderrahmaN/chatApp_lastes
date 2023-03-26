@@ -79,10 +79,6 @@ const Chats = () => {
             </Search>
           </Stack>
           <Stack spacing={1}>
-            <Stack direction={"row"} spacing={1.5} alignItems="center">
-              <ArchiveBox size={24} />
-              <Button variant="text">Archive</Button>
-            </Stack>
             <Divider />
           </Stack>
           <Stack sx={{ flexGrow: 1, height: "100%" }}>
@@ -93,14 +89,14 @@ const Chats = () => {
                 </Typography>
                 {/* Chat List */}
                 {Admins.map((el, idx) => {
-                  return <ChatElement {...el} />;
+                  return <ChatElement {...el} key={idx} />;
                 })}
                 <Typography variant="subtitle2" sx={{ color: "#676667" }} key={25}>
                   Drivers
                 </Typography>
                 {/* Chat List */}
                 {Drivers.map((el, idx) => {
-                  return <ChatElement {...el} />;
+                  return <ChatElement {...el} key={idx} />;
                 })}
               </Stack>
             </SimpleBarStyle>

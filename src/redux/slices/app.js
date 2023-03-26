@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "../../utils/axios";
-import { socket } from "../../socket";
+import { connectSocket, socket } from "../../socket";
 
 // ----------------------------------------------------------------------
 
@@ -74,7 +74,9 @@ const slice = createSlice({
     }
   },
 });
-
+if (!socket) {
+  connectSocket(window.localStorage.getItem("user_id"));
+}
 // Reducer
 export default slice.reducer;
 
@@ -119,6 +121,13 @@ export function FetchUsers() {
   return async (dispatch, getState ) => {
 
     socket.on("driverChat",  async(data) => {
+      await data.map((client)=>{
+        client.type= "driver"
+        client.id_driver = client.id
+        client.fullName= client.first_name + " " + client.last_name
+
+      })
+
      dispatch(slice.actions.updateDrivers({ Drivers: data }));
     });
 
@@ -130,32 +139,35 @@ export function FetchFriends() {
     socket.on("AdminsChat",  async(data) => {
       dispatch(slice.actions.updateAdmins({ Admins: data }));
      });
-   
-
-
-
-
-
-
   };
 }
 export function FetchAdmins() {
   return async (dispatch, getState) => {
     socket.on("AdminsChat",  async(data) => {
-      dispatch(slice.actions.updateAdmins({ Admins: data }));
+      await data.map((client)=>{
+        client.type= "admin"
+        client.id_admin = client.id
+        client.fullName= client.first_name + " " + client.last_name
+      })
+       dispatch(slice.actions.updateAdmins({ Admins: data }));
      });
-
-
   };
 }
 export function FetchClient() {
   return async (dispatch, getState) => {
-    
     socket.on("ClientsChat",  async(data) => {
+      await data.map((client)=>{
+        client.type= "client"
+        client.id_client = client.id
+        client.fullName= client.first_name + " " + client.last_name
+
+      })
+
        await dispatch(slice.actions.updateClients({ Clients: data }));
      });
     };
   }
+  
 
 
 export function FetchFriendRequests() {

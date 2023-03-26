@@ -42,7 +42,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const ChatElement = ({ imageProfile,first_name,last_name  , msg, time, unread, online, id ,type }) => {
+const GroupChatElement = ({ imageProfile,name  , msg, time, unread, online, id ,type }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedChatId = searchParams.get("id");
 
@@ -92,13 +92,13 @@ const ChatElement = ({ imageProfile,first_name,last_name  , msg, time, unread, o
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar alt={first_name} src={`http://testvtc.fr/api/public/up/${imageProfile}`} />
+              <Avatar alt={name} src={`http://testvtc.fr/api/public/up/${imageProfile}`} />
             </StyledBadge>
           ) : (
-            <Avatar alt={first_name} src={`http://testvtc.fr/api/public/up/${imageProfile}`} />
+            <Avatar alt={name} src={`http://testvtc.fr/api/public/up/${imageProfile}`} />
           )}
           <Stack spacing={0.3}>
-            <Typography variant="subtitle2">{first_name} {last_name} </Typography>
+            <Typography variant="subtitle2">{name} </Typography>
             <Typography variant="caption">{type}</Typography>
           </Stack>
         </Stack>
@@ -117,4 +117,4 @@ const ChatElement = ({ imageProfile,first_name,last_name  , msg, time, unread, o
   );
 };
 
-export default ChatElement;
+export default GroupChatElement;

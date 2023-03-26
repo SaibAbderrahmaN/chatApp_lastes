@@ -13,7 +13,8 @@ const initialState = {
   user_id: null,
   email: "",
   error: false,
-  type:null
+  type:null,
+  Groups:[]
 };
 
 const slice = createSlice({
@@ -31,6 +32,7 @@ const slice = createSlice({
       state.type = action.payload.type;
       state.user = action.payload.user;
       state.email = action.payload.email;
+      state.Groups = action.payload.Groups
     },
     signOut(state, action) {
       state.isLoggedIn = false;
@@ -74,6 +76,7 @@ export function LoginUser(formValues) {
             type: response.data.type
             ,user : response.data.fullName
             ,email : response.data.email
+            ,Groups:  response.data.rooms
           })
         );
         window.localStorage.setItem("user_id", response.data.id);

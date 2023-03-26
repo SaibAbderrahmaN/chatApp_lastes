@@ -50,12 +50,8 @@ export default function Router() {
   ]);
 }
 
-const GeneralApp = Loadable(
-  lazy(() => import("../pages/dashboard/GeneralApp"))
-);
-const Conversation = Loadable(
-  lazy(() => import("../pages/dashboard/Conversation"))
-);
+const GeneralApp = Loadable(lazy(() => import("../pages/dashboard/GeneralApp")));
+const Conversation = Loadable( lazy(() => import("../pages/dashboard/Conversation")));
 const Chats = Loadable(lazy(() => import("../pages/dashboard/Chats")));
 const Group = Loadable(lazy(() => import("../pages/dashboard/Group")));
 const CallPage = Loadable(lazy(() => import("../pages/dashboard/Call")));

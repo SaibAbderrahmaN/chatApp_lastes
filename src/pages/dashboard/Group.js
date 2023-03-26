@@ -19,9 +19,17 @@ import {
 } from "../../components/Search";
 import CreateGroup from "../../sections/Dashboard/CreateGroup";
 import { useSelector } from "react-redux";
+import { socket } from "../../socket";
+import GroupChatElement from "../../components/GroupChatElement";
+import { useSearchParams } from "react-router-dom";
+import NoChat from "../../assets/Illustration/NoChat";
+import ChatComponent from "./Conversation";
 
 const Group = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  const [myRooms, setMyRooms] = useState([])
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
@@ -31,6 +39,9 @@ const Group = () => {
   }
   const theme = useTheme();
   const {Admins , Drivers ,Clients} =useSelector((state)=>state.app)
+  const {Groups} =useSelector((state)=>state.auth)
+  console.log(Groups)
+
 
   return (
     <>
@@ -87,25 +98,11 @@ const Group = () => {
               <SimpleBarStyle timeout={500} clickOnTrack={false}>
                 <Stack spacing={2.4}>
                   <Typography variant="subtitle2" sx={{ color: "#676667" }}>
-                    admins
+                    mu groups
                   </Typography>
                   {/* Chat List */}
-                  {Admins.map((el, idx) => {
-                    return <ChatElement {...el}  key={idx}/>;
-                  })}
-                  <Typography variant="subtitle2" sx={{ color: "#676667" }}>
-                    Drivers
-                  </Typography>
-                  {/* Chat List */}
-                  {Drivers.map((el, idx) => {
-                    return <ChatElement {...el} key={idx} />;
-                  })}
-                         <Typography variant="subtitle2" sx={{ color: "#676667" }}>
-                    Clients
-                  </Typography>
-                  {/* Chat List */}
-                  {Clients.map((el, idx) => {
-                    return <ChatElement {...el} key={idx} />;
+                  {Groups.map((el, idx) => {
+                    return <GroupChatElement {...el}  key={idx}/>;
                   })}
                 </Stack>
               </SimpleBarStyle>
@@ -113,7 +110,49 @@ const Group = () => {
           </Stack>
         </Box>
 
+
         {/* Right */}
+        <Box
+          sx={{
+            height: "100%",
+            width: "calc(100vw - 420px )",
+            backgroundColor:
+              theme.palette.mode === "light"
+                ? "#FFF"
+                : theme.palette.background.paper,
+            borderBottom:
+              searchParams.get("type") === "individual-chat" &&
+              searchParams.get("id")
+                ? "0px"
+                : "6px solid #0162C4",
+          }}
+        >
+          {searchParams.get("type") === "individual-chat" &&
+          searchParams.get("id") ? (
+            <ChatComponent />
+          ) : (
+            <Stack
+              spacing={2}
+              sx={{ height: "100%", width: "100%" }}
+              alignItems="center"
+              justifyContent={"center"}
+            >
+              <NoChat />
+              <Typography variant="subtitle2">
+                Select a conversation or start a{" "}
+                <Link
+                  style={{
+                    color: theme.palette.primary.main,
+                    textDecoration: "none",
+                  }}
+                  to="/"
+                >
+                  new one
+                </Link>
+              </Typography>
+            </Stack>
+          )}
+        </Box>
       </Stack>
       {openDialog && <CreateGroup open={openDialog} handleClose={handleCloseDialog} />}
     </>

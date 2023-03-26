@@ -152,27 +152,9 @@ const LinkMsg = ({ el, menu }) => {
   const theme = useTheme();
   return (
     <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
-      <Box
-        px={1.5}
-        py={1.5}
-        sx={{
-          backgroundColor: el.incoming
-            ? alpha(theme.palette.background.default, 1)
-            : theme.palette.primary.main,
-          borderRadius: 1.5,
-          width: "max-content",
-        }}
-      >
+      <Box   px={1.5}   py={1.5}   sx={{     backgroundColor: el.incoming       ? alpha(theme.palette.background.default, 1)       : theme.palette.primary.main,     borderRadius: 1.5,     width: "max-content",   }} >
         <Stack spacing={2}>
-          <Stack
-            p={2}
-            direction="column"
-            spacing={3}
-            alignItems="start"
-            sx={{
-              backgroundColor: theme.palette.background.paper,
-              borderRadius: 1,
-            }}
+          <Stack   p={2}   direction="column"   spacing={3}   alignItems="start"   sx={{     backgroundColor: theme.palette.background.paper,     borderRadius: 1,   }}
           >
             <img
               src={el.preview}
@@ -181,15 +163,14 @@ const LinkMsg = ({ el, menu }) => {
             />
             <Stack direction={"column"} spacing={2}>
               <Typography variant="subtitle2" textAlign={"start"}>
-                Creating Chat App using MERN
+                Creating Chat App 
               </Typography>
               <Typography
                 component={Link}
-                to="//https://www.youtube.com"
+                to=""
                 variant="subtitle2"
                 sx={{ color: theme.palette.primary.main }}
               >
-                {truncateString("www.youtube.com/watch/v12uqywHTY2", 16)}
               </Typography>
             </Stack>
           </Stack>

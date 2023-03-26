@@ -24,6 +24,7 @@ import { useTheme } from "@mui/material/styles";
 import { faker } from "@faker-js/faker";
 import ThemeDialog from "../../../sections/Dashboard/Settings/ThemeDialog";
 import ShortcutDialog from "../../../sections/Dashboard/Settings/ShortcutDialog";
+import { useSelector } from "react-redux";
 
 const Settings = () => {
   const theme = useTheme();
@@ -33,6 +34,7 @@ const Settings = () => {
   const handleOpenTheme = () => {
     setOpenTheme(true);
   };
+  const auth =useSelector((state=>state.auth))
 
   const handleCloseTheme = () => {
     setOpenTheme(false);
@@ -134,8 +136,8 @@ const Settings = () => {
                 sx={{ height: 56, width: 56 }}
               />
               <Stack spacing={0.5}>
-                <Typography variant="article">{`${faker.name.firstName()} ${faker.name.lastName()}`}</Typography>
-                <Typography variant="body2">{faker.random.words()}</Typography>
+                <Typography variant="article">{auth.user}</Typography>
+                <Typography variant="body2">{auth.type}</Typography>
               </Stack>
             </Stack>
             {/* List */}

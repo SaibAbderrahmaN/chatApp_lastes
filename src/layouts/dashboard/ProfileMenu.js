@@ -52,14 +52,16 @@ const ProfileMenu = () => {
         <Box p={1}>
           <Stack spacing={1}>
             {Profile_Menu.map((el, idx) => (
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleClose} key={idx}>
                 <Stack
                   onClick={() => {
                     if (idx === 2) {
                       dispatch(LogoutUser());
                       socket.emit("end");
                     }
+                  
                   }}
+                  key={idx}
                   sx={{ width: 100 }}
                   direction="row"
                   alignItems={"center"}
