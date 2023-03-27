@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Stack,
@@ -10,8 +10,6 @@ import {
 import { MagnifyingGlass, Plus } from "phosphor-react";
 import { useTheme } from "@mui/material/styles";
 import { SimpleBarStyle } from "../../components/Scrollbar";
-import { ChatList } from "../../data";
-import ChatElement from "../../components/ChatElement";
 import {
   Search,
   SearchIconWrapper,
@@ -25,12 +23,10 @@ import { useSearchParams } from "react-router-dom";
 import NoChat from "../../assets/Illustration/NoChat";
 import ChatComponent from "./Conversation";
 
+
 const Group = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [searchParams] = useSearchParams();
-
-  const [myRooms, setMyRooms] = useState([])
-
   const handleCloseDialog = () => {
     setOpenDialog(false);
   }
@@ -38,16 +34,19 @@ const Group = () => {
     setOpenDialog(true);
   }
   const theme = useTheme();
-  const {Admins , Drivers ,Clients} =useSelector((state)=>state.app)
   const {Groups} =useSelector((state)=>state.auth)
-  console.log(Groups)
+
+  const state = useSelector((state)=>console.log(state))
+
+  const { conversations, current_messages } = useSelector(
+    (state) => state.conversation.direct_chat
+  );
 
 
   return (
     <>
       <Stack direction="row" sx={{ width: "100%" }}>
         {/* Left */}
-
         <Box
           sx={{
             overflowY: "scroll",
@@ -129,7 +128,7 @@ const Group = () => {
         >
           {searchParams.get("type") === "individual-chat" &&
           searchParams.get("id") ? (
-            <ChatComponent />
+            <ChatComponent  room={searchParams.get("id")} />
           ) : (
             <Stack
               spacing={2}

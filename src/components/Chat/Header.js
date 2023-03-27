@@ -18,7 +18,7 @@ import { faker } from "@faker-js/faker";
 import { useSearchParams } from "react-router-dom";
 import useResponsive from "../../hooks/useResponsive";
 import { ToggleSidebar } from "../../redux/slices/app";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -79,6 +79,10 @@ const ChatHeader = () => {
     setConversationMenuAnchorEl(null);
   };
 
+  const { current_conversation } = useSelector(
+    (state) => state.conversation.direct_chat
+  );
+
   return (
     <Box
       p={2}
@@ -111,12 +115,12 @@ const ChatHeader = () => {
               }}
               variant="dot"
             >
-              <Avatar alt={faker.name.fullName()} src={faker.image.avatar()} />
+              <Avatar alt={current_conversation.name} src={current_conversation.name} />
             </StyledBadge>
           </Box>
           <Stack spacing={0.2}>
-            <Typography variant="subtitle2">{faker.name.fullName()}</Typography>
-            <Typography variant="caption">Online</Typography>
+            <Typography variant="subtitle2">{current_conversation.name}</Typography>
+            <Typography variant="caption">groupe</Typography>
           </Stack>
         </Stack>
         <Stack direction={"row"} alignItems="center" spacing={isMobile ? 1 : 3}>

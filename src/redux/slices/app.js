@@ -22,7 +22,9 @@ const initialState = {
   Admins:[],
   friends: [], // all friends
   friendRequests: [], // all friend requests
-  socket: null,
+  chat_type: null,
+  room_id: null,
+
 };
 
 const slice = createSlice({
@@ -71,7 +73,11 @@ const slice = createSlice({
     },
     updateSocket(state, action) {
       state.socket = action.payload.socket;
-    }
+    },
+    selectConversation(state, action) {
+      state.chat_type = "individual";
+      state.room_id = action.payload.room_id;
+    },
   },
 });
 if (!socket) {
@@ -200,3 +206,8 @@ export function updateSocket(socket) {
       dispatch(slice.actions.updateSocket({socket}));
     }
 }
+
+export const SelectConversation = ({ room_id }) => {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.selectConversation({ room_id }));
+  };   }

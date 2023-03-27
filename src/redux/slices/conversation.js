@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "../../utils/axios";
 import { faker } from "@faker-js/faker";
+import { useSelector } from "react-redux";
 
 const user_id = window.localStorage.getItem("user_id");
+const type = window.localStorage.getItem("type");
 
 const initialState = {
   direct_chat: {
@@ -88,13 +89,14 @@ const slice = createSlice({
     fetchCurrentMessages(state, action) {
       const messages = action.payload.messages;
       const formatted_messages = messages.map((el) => ({
-        id: el._id,
+        id: el.id,
+        fullName:(el.driver?.fullName)|| (el.admin?.fullName) || (el.client?.fullName),
         type: "msg",
         subtype: el.type,
-        message: el.text,
-        incoming: el.to === user_id,
-        outgoing: el.from === user_id,
-      }));
+        message: el.message,
+        incoming:(el.driver?.id != user_id && type === "driver") || (!el.admin?.id != user_id && type === "admin") || (!el.client?.id != user_id && type === "client") ,
+        outgoing:(el.driver?.id == user_id && type === "driver") || (el.admin?.id == user_id && type === "admin") || (el.client?.id == user_id && type === "client")  
+         })); 
       state.direct_chat.current_messages = formatted_messages;
     },
     addDirectMessage(state, action) {

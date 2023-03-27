@@ -1,13 +1,20 @@
 import React, { useEffect } from "react";
 import { Stack } from "@mui/material";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useSearchParams } from "react-router-dom";
 import useResponsive from "../../hooks/useResponsive";
 import SideNav from "./SideNav";
 import { useDispatch, useSelector } from "react-redux";
-import { FetchAdmins, FetchClient, FetchUsers, showSnackbar } from "../../redux/slices/app";
+import { FetchAdmins, FetchClient, FetchUsers } from "../../redux/slices/app";
 import { socket, connectSocket } from "../../socket";
-
+import { SelectConversation, showSnackbar } from "../../redux/slices/app";
+import {
+  UpdateDirectConversation,
+  AddDirectConversation,
+  AddDirectMessage,
+} from "../../redux/slices/conversation";
 const DashboardLayout = () => {
+  const [searchParams] = useSearchParams();
+
   const isDesktop = useResponsive("up", "md");
   const dispatch = useDispatch();
 
@@ -106,6 +113,8 @@ const DashboardLayout = () => {
   if (!isLoggedIn) {
     return <Navigate to={"/auth/login"} />;
   }
+
+  
 
 
   return (

@@ -10,6 +10,7 @@ import ChatElement from "../../components/ChatElement";
 import { Search, SearchIconWrapper, StyledInputBase,} from "../../components/Search";
 import Friends from "../../sections/Dashboard/Friends";
 import { useSelector } from "react-redux";
+import GroupChatElement from "../../components/GroupChatElement";
 
 const Chats = () => {
   const theme = useTheme();
@@ -24,6 +25,8 @@ const Chats = () => {
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
+  const {Groups} =useSelector((state)=>state.auth)
+
  
   return (
     <>
@@ -85,19 +88,13 @@ const Chats = () => {
             <SimpleBarStyle timeout={500} clickOnTrack={false}>
               <Stack spacing={2.4}>
                 <Typography variant="subtitle2" sx={{ color: "#676667" }}  key={30}>
-                 Admins
+                 mu Chats
                 </Typography>
                 {/* Chat List */}
-                {Admins.map((el, idx) => {
-                  return <ChatElement {...el} key={idx} />;
+                {Groups.map((el, idx) => {
+                  return <GroupChatElement {...el} key={idx} />;
                 })}
-                <Typography variant="subtitle2" sx={{ color: "#676667" }} key={25}>
-                  Drivers
-                </Typography>
-                {/* Chat List */}
-                {Drivers.map((el, idx) => {
-                  return <ChatElement {...el} key={idx} />;
-                })}
+              
               </Stack>
             </SimpleBarStyle>
           </Stack>
