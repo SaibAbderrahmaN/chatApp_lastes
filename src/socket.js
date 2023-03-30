@@ -4,14 +4,8 @@ let socket;
 
 const connectSocket = (user_id) => {
   socket = io("http://localhost:3000", {
-    "transports": [ "websocket", "polling" ],
-    "extraHeaders": {
-      "ApiKey": "uQvkv3xmMxuQ1urZceYP8aHoF34mkcmI"
-    }, 
-    query: {
-      user_id: window.localStorage.getItem("user_id"),
-      type: window.localStorage.getItem("type")
-    }
+    query: `user_id=${user_id}`,
+
   });
 
   socket.on("connect", () => {
@@ -19,7 +13,7 @@ const connectSocket = (user_id) => {
   });
 
   socket.on("disconnect", (reason) => {
-    console.log(`Socket disconnected: ${reason}`);
+    console.log(`${reason}`);
   });
 
   socket.on("error", (error) => {

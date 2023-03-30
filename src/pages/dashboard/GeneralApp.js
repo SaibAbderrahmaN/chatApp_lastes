@@ -19,6 +19,8 @@ const GeneralApp = () => {
   const { sideBar } = useSelector((state) => state.app);
   const App = useSelector((app)=>console.log(app))
 
+  
+
   return (
     <>
       <Stack direction="row" sx={{ width: "100%" }}>

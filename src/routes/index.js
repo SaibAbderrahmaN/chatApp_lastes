@@ -24,6 +24,8 @@ export default function Router() {
       element: <AuthLayout />,
       children: [
         { path: "login", element: <LoginPage /> },
+        { path: "ClientLogin", element: <ClientLogin /> },
+        { path: "adminLogin", element: <AdminLogin /> },
       ],
     },
     {
@@ -59,10 +61,10 @@ const Contact = Loadable(lazy(() => import("../sections/Dashboard/Contact")));
 const Page404 = Loadable(lazy(() => import("../pages/Page404")));
 
 const LoginPage = Loadable(lazy(() => import("../pages/auth/Login")));
+const ClientLogin = Loadable(lazy(() => import("../pages/auth/ClientLogin")));
+const AdminLogin = Loadable(lazy(() => import("../pages/auth/AdminLogin")));
 
 
 // Settings
 const Settings = Loadable(lazy(() => import("../pages/dashboard/Settings")));
-const Profile = Loadable(
-  lazy(() => import("../pages/dashboard/Settings/Profile"))
-);
+const Profile = Loadable(lazy(() => import("../pages/dashboard/Settings/Profile")));

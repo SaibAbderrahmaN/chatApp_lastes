@@ -42,7 +42,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const ChatElement = ({ imageProfile,first_name,last_name  , msg, time, unread, online, id ,type }) => {
+const ChatElement = ({ imageProfile,name , msg, time, unread, online, id ,type }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedChatId = searchParams.get("id");
 
@@ -92,13 +92,13 @@ const ChatElement = ({ imageProfile,first_name,last_name  , msg, time, unread, o
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar alt={first_name} src={`http://testvtc.fr/api/public/up/${imageProfile}`} />
+              <Avatar alt={name} src={`${imageProfile}`} />
             </StyledBadge>
           ) : (
-            <Avatar alt={first_name} src={`http://testvtc.fr/api/public/up/${imageProfile}`} />
+            <Avatar alt={name} src={`${imageProfile}`} />
           )}
           <Stack spacing={0.3}>
-            <Typography variant="subtitle2">{first_name} {last_name} </Typography>
+            <Typography variant="subtitle2">{name} </Typography>
             <Typography variant="caption">{type}</Typography>
           </Stack>
         </Stack>

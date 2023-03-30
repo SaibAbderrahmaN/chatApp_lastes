@@ -12,7 +12,6 @@ import { styled, useTheme } from "@mui/material/styles";
 import { Chat } from "phosphor-react";
 import { useSelector } from "react-redux";
 import { socket } from "../socket";
-
 const StyledChatBox = styled(Box)(({ theme }) => ({
   "&:hover": {
     cursor: "pointer",
@@ -48,6 +47,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
+
 const UserElement = ({
   img,
   first_name,
@@ -57,10 +57,32 @@ const UserElement = ({
   online,
   id,
 }) => {
-  const { user_id } = useSelector((state) => state.auth);
-  const theme = useTheme();
 
+
+  const theme = useTheme();
   const name = `${first_name} ${last_name}`;
+  const { user_id ,type } = useSelector((state) => state.auth);
+  const DATA= {id_driver : id}
+  switch(type) {
+    case "driver":
+      DATA.id_driver = user_id
+
+      break;
+    case "admin":
+      DATA.id_admin = user_id
+
+      break;
+    case "client":
+      DATA.id_client = user_id
+
+      break;
+    case "company":
+      DATA.id_company = user_id
+
+      break;
+    default:
+  }
+  
 
   return (
     <StyledChatBox
@@ -98,10 +120,7 @@ const UserElement = ({
         <Stack direction={"row"} spacing={2} alignItems={"center"}>
           <IconButton
             onClick={() => {
-              socket.emit("join-room", { to: id, from: user_id ,name:"abderrahman"}, () => {
-                alert("request sent");
-                console.log("join-room")
-              });
+              socket.emit("start_conversation", DATA);
             }}
           >
             <Chat />
@@ -112,6 +131,174 @@ const UserElement = ({
     </StyledChatBox>
   );
 };
+
+const ClientElement = ({
+  img,
+  first_name,
+  last_name,
+  incoming,
+  missed,
+  online,
+  id,
+}) => {
+
+
+  const theme = useTheme();
+  const name = `${first_name} ${last_name}`;
+  const { user_id ,type } = useSelector((state) => state.auth);
+  const DATA= {id_client :id}
+  switch(type) {
+    case "driver":
+      DATA.id_driver = user_id
+
+      break;
+    case "admin":
+      DATA.id_admin = user_id
+
+      break;
+    case "client":
+      DATA.id_client = user_id
+
+      break;
+    case "company":
+      DATA.id_company = user_id
+
+      break;
+    default:
+  }
+  
+
+  return (
+    <StyledChatBox
+      sx={{
+        width: "100%",
+
+        borderRadius: 1,
+
+        backgroundColor: theme.palette.background.paper,
+      }}
+      p={2}
+    >
+      <Stack
+        direction="row"
+        alignItems={"center"}
+        justifyContent="space-between"
+      >
+        <Stack direction="row" alignItems={"center"} spacing={2}>
+          {" "}
+          {online ? (
+            <StyledBadge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              variant="dot"
+            >
+              <Avatar alt={name} src={img} />
+            </StyledBadge>
+          ) : (
+            <Avatar alt={name} src={img} />
+          )}
+          <Stack spacing={0.3}>
+            <Typography variant="subtitle2">{name}</Typography>
+          </Stack>
+        </Stack>
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          <IconButton
+            onClick={() => {
+              socket.emit("start_conversation", DATA);
+            }}
+          >
+            <Chat />
+          
+          </IconButton>
+        </Stack>
+      </Stack>
+    </StyledChatBox>
+  );
+};
+const AdminElement = ({
+  img,
+  first_name,
+  last_name,
+  incoming,
+  missed,
+  online,
+  id,
+}) => {
+
+
+  const theme = useTheme();
+  const name = `${first_name} ${last_name}`;
+  const { user_id ,type } = useSelector((state) => state.auth);
+  const DATA= {id_admin : id}
+  switch(type) {
+    case "driver":
+      DATA.id_driver = user_id
+
+      break;
+    case "admin":
+      DATA.id_admin = user_id
+
+      break;
+    case "client":
+      DATA.id_client = user_id
+
+      break;
+    case "company":
+      DATA.id_company = user_id
+
+      break;
+    default:
+  }
+  
+
+  return (
+    <StyledChatBox
+      sx={{
+        width: "100%",
+
+        borderRadius: 1,
+
+        backgroundColor: theme.palette.background.paper,
+      }}
+      p={2}
+    >
+      <Stack
+        direction="row"
+        alignItems={"center"}
+        justifyContent="space-between"
+      >
+        <Stack direction="row" alignItems={"center"} spacing={2}>
+          {" "}
+          {online ? (
+            <StyledBadge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              variant="dot"
+            >
+              <Avatar alt={name} src={img} />
+            </StyledBadge>
+          ) : (
+            <Avatar alt={name} src={img} />
+          )}
+          <Stack spacing={0.3}>
+            <Typography variant="subtitle2">{name}</Typography>
+          </Stack>
+        </Stack>
+        <Stack direction={"row"} spacing={2} alignItems={"center"}>
+          <IconButton
+            onClick={() => {
+              socket.emit("start_conversation", DATA);
+            }}
+          >
+            <Chat />
+          
+          </IconButton>
+        </Stack>
+      </Stack>
+    </StyledChatBox>
+  );
+};
+
 
 const FriendRequestElement = ({
   img,
@@ -236,4 +423,4 @@ const FriendElement = ({
   );
 };
 
-export { UserElement, FriendRequestElement, FriendElement };
+export { UserElement, FriendRequestElement, FriendElement , ClientElement,AdminElement };

@@ -58,7 +58,7 @@ const GroupChatElement = ({ imageProfile,name  , msg, time, unread, online, id ,
     <StyledChatBox
       onClick={() => {
         searchParams.set("id", id);
-        searchParams.set("type", "individual-chat");
+        searchParams.set("type", "group-chat");
         setSearchParams(searchParams);
       }}
       sx={{
@@ -92,10 +92,10 @@ const GroupChatElement = ({ imageProfile,name  , msg, time, unread, online, id ,
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
               variant="dot"
             >
-              <Avatar alt={name} src={`http://testvtc.fr/api/public/up/${imageProfile}`} />
+              <Avatar alt={name} src={`${imageProfile}`} />
             </StyledBadge>
           ) : (
-            <Avatar alt={name} src={`http://testvtc.fr/api/public/up/${imageProfile}`} />
+            <Avatar alt={name} src={`${imageProfile}`} />
           )}
           <Stack spacing={0.3}>
             <Typography variant="subtitle2">{name} </Typography>

@@ -97,18 +97,19 @@ const ChatInput = ({value, handleChange ,id, openPicker, setOpenPicker }) => {
   );
 };
 
-const Footer = ({id}) => {
+const GroupFooter = ({id}) => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState("");
   const {user_id ,type } =useSelector((state)=>state.auth)
-  const {current_chat } = useSelector(
-    (state) => state.conversation.group_chat
+  const {current_conversation } = useSelector(
+    (state) => state.conversation.direct_chat
   );
   const handleChange = (event) => {
     setValue(event.target.value);
   };
   const DATA ={
-    type,
-    id_conversation:id,
+    type:"driver",
+    id_room:id,
   }
 
 
@@ -173,7 +174,18 @@ const Footer = ({id}) => {
         <Stack direction="row" alignItems={"center"} spacing={isMobile ? 1 : 3}>
           <Stack sx={{ width: "100%" }}>
             <Box
-              style={{ zIndex: 10, position: "fixed",display: openPicker ? "inline" : "none",bottom: 81,right: isMobile ? 20 :sideBar.open      ? 420       : 100,   }} >
+              style={{
+                zIndex: 10,
+                position: "fixed",
+                display: openPicker ? "inline" : "none",
+                bottom: 81,
+                right: isMobile
+                  ? 20
+                  : sideBar.open
+                  ? 420
+                  : 100,
+              }}
+            >
               <Picker
                 theme={theme.palette.mode}
                 data={data}
@@ -199,8 +211,10 @@ const Footer = ({id}) => {
               justifyContent={"center"}
               onClick={async()=>{
                 DATA.message=value
-                await socket.emit("send-chat-message", DATA , current_chat.id_customer )
-                setValue(' ')
+                await socket.emit("send-message", DATA ,current_conversation.name ,(Message)=>{
+                  dispatch(FetchCurrentMessages(Message));
+                })
+               setValue(' ')
               }}
 
             >
@@ -215,4 +229,4 @@ const Footer = ({id}) => {
   );
 };
 
-export default Footer;
+export default GroupFooter;

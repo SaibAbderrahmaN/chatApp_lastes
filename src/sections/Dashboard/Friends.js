@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Dialog, DialogContent, Slide, Stack, Tab, Tabs } from "@mui/material";
+import {  Dialog, DialogContent, Slide, Stack, Tab, Tabs } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { FetchFriendRequests, FetchFriends, FetchUsers,FetchAdmins , FetchClient} from "../../redux/slices/app";
-import { FriendElement, FriendRequestElement, UserElement } from "../../components/UserElement";
+import { AdminElement, ClientElement, FriendElement, FriendRequestElement, UserElement } from "../../components/UserElement";
+import { socket } from "../../socket";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -16,6 +17,7 @@ const DriversList = () => {
   useEffect(() => {
     dispatch(FetchUsers());
   }, []);
+
 
   return (
     <>
@@ -37,7 +39,7 @@ const AdminsList = () => {
   return (
     <>
       {Admins?.map((el, idx) => {
-        return <UserElement key={idx} {...el} />;
+        return <AdminElement key={idx} {...el} />;
       })}
     </>
   );
@@ -54,7 +56,7 @@ const ClientList = () => {
   return (
     <>
       {Clients?.map((el, idx) => {
-        return <UserElement key={idx} {...el} />;
+        return <ClientElement key={idx} {...el} />;
       })}
     </>
   );

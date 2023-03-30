@@ -1,32 +1,29 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Stack,
-  Typography,
-  IconButton,
-  Link,
-  Divider,
-} from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { Box, Stack, Typography, IconButton, Link, Divider,} from "@mui/material";
 import { MagnifyingGlass, Plus } from "phosphor-react";
 import { useTheme } from "@mui/material/styles";
 import { SimpleBarStyle } from "../../components/Scrollbar";
-import {
-  Search,
-  SearchIconWrapper,
-  StyledInputBase,
-} from "../../components/Search";
+import {Search,SearchIconWrapper,StyledInputBase,} from "../../components/Search";
 import CreateGroup from "../../sections/Dashboard/CreateGroup";
-import { useSelector } from "react-redux";
-import { socket } from "../../socket";
+import { useDispatch, useSelector } from "react-redux";
+import { socket ,connectSocket} from "../../socket";
 import GroupChatElement from "../../components/GroupChatElement";
 import { useSearchParams } from "react-router-dom";
 import NoChat from "../../assets/Illustration/NoChat";
-import ChatComponent from "./Conversation";
+import { AddDirectMessage, UpdateDirectConversation } from "../../redux/slices/conversation";
+import { ChatGroupComponent } from "./GroupConversation"
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 const Group = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [NewMessage, setNewMessage] = useState({});
   const [searchParams] = useSearchParams();
+  const messageListRef = useRef(null);
+  const dispatch = useDispatch();
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   }
@@ -35,19 +32,45 @@ const Group = () => {
   }
   const theme = useTheme();
   const {Groups} =useSelector((state)=>state.auth)
-
-  const state = useSelector((state)=>console.log(state))
-
-  const { conversations, current_messages } = useSelector(
+  const { user_id , type } = useSelector(
+    (state) => state.auth
+  );
+  const { current_messages} = useSelector(
     (state) => state.conversation.direct_chat
   );
+  if (!socket) {
+    connectSocket(user_id);
+  }
+  useEffect(() => {
+    dispatch(
+      AddDirectMessage({
+        id: NewMessage.id,
+        type: "msg",
+        subtype: NewMessage.type,
+        message: NewMessage.message,
+        incoming:(NewMessage.id_driver != user_id && type === "driver") || (NewMessage?.id_admin != user_id && type === "admin") || (NewMessage.id_client != user_id && type === "client") ,
+        outgoing:(NewMessage.id_driver == user_id && type === "driver") || (NewMessage?.id_admin == user_id && type === "admin") || (NewMessage.id_client == user_id && type === "client")  
+        })
+    );
 
+  }, [NewMessage])
+  
+
+  socket.on("receive-message", (data) => {
+    setNewMessage(data)
+ 
+  });
+
+  useEffect(() => {
+    messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+  }, [current_messages]);
 
   return (
     <>
       <Stack direction="row" sx={{ width: "100%" }}>
         {/* Left */}
         <Box
+         
           sx={{
             overflowY: "scroll",
 
@@ -97,7 +120,7 @@ const Group = () => {
               <SimpleBarStyle timeout={500} clickOnTrack={false}>
                 <Stack spacing={2.4}>
                   <Typography variant="subtitle2" sx={{ color: "#676667" }}>
-                    mu groups
+                    my groups
                   </Typography>
                   {/* Chat List */}
                   {Groups.map((el, idx) => {
@@ -112,6 +135,7 @@ const Group = () => {
 
         {/* Right */}
         <Box
+          ref={messageListRef}
           sx={{
             height: "100%",
             width: "calc(100vw - 420px )",
@@ -120,15 +144,15 @@ const Group = () => {
                 ? "#FFF"
                 : theme.palette.background.paper,
             borderBottom:
-              searchParams.get("type") === "individual-chat" &&
+              searchParams.get("type") === "group-chat" &&
               searchParams.get("id")
                 ? "0px"
                 : "6px solid #0162C4",
           }}
         >
-          {searchParams.get("type") === "individual-chat" &&
+          {searchParams.get("type") === "group-chat" &&
           searchParams.get("id") ? (
-            <ChatComponent  room={searchParams.get("id")} />
+            <ChatGroupComponent  room={searchParams.get("id")} />
           ) : (
             <Stack
               spacing={2}
@@ -138,16 +162,7 @@ const Group = () => {
             >
               <NoChat />
               <Typography variant="subtitle2">
-                Select a conversation or start a{" "}
-                <Link
-                  style={{
-                    color: theme.palette.primary.main,
-                    textDecoration: "none",
-                  }}
-                  to="/"
-                >
-                  new one
-                </Link>
+                Select a group to  start a{" "}
               </Typography>
             </Stack>
           )}

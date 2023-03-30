@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Badge, Box, Divider, Fade, IconButton, Menu, MenuItem, Stack, styled, Typography,} from "@mui/material";
+import {  Avatar,  Badge,  Box,  Divider,  Fade,  IconButton,  Menu,  MenuItem,  Stack,  styled,  Typography,} from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { CaretDown, MagnifyingGlass, Phone, VideoCamera } from "phosphor-react";
 import useResponsive from "../../hooks/useResponsive";
@@ -50,7 +50,7 @@ const Conversation_Menu = [
   },
 ];
 
-const ChatHeader = () => {
+const GroupHeader = () => {
   const dispatch = useDispatch();
   const isMobile = useResponsive("between", "md", "xs", "sm");
   const theme = useTheme();
@@ -65,12 +65,9 @@ const ChatHeader = () => {
     setConversationMenuAnchorEl(null);
   };
 
-  const { current_chat } = useSelector(
-    (state) => state.conversation.group_chat
+  const { current_conversation } = useSelector(
+    (state) => state.conversation.direct_chat
   );
-
-
-
   return (
     <Box
       p={2}
@@ -103,12 +100,12 @@ const ChatHeader = () => {
               }}
               variant="dot"
             >
-              <Avatar alt={current_chat?.name} src={current_chat?.name} />
+              <Avatar alt={current_conversation?.name} src={current_conversation?.name} />
             </StyledBadge>
           </Box>
           <Stack spacing={0.2}>
-            <Typography variant="subtitle2">{current_chat?.name} </Typography>
-            <Typography variant="caption">{current_chat?.type}</Typography>
+            <Typography variant="subtitle2">{current_conversation?.name}</Typography>
+            <Typography variant="caption">groupe</Typography>
           </Stack>
         </Stack>
         <Stack direction={"row"} alignItems="center" spacing={isMobile ? 1 : 3}>
@@ -178,4 +175,4 @@ const ChatHeader = () => {
   );
 };
 
-export default ChatHeader;
+export default GroupHeader;

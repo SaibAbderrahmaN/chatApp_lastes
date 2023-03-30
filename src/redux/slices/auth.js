@@ -97,7 +97,98 @@ export function LoginUser(formValues) {
       });
   };
 }
-
+export function LoginClient(formValues) {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+    await axios
+      .put(
+        "/client/login",
+        {
+          ...formValues,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+            user_id: response.data.id,
+            type: "client"
+            ,user : response.data.fullName
+            ,email : response.data.email
+            ,Groups:  response.data.rooms
+          })
+        );
+        window.localStorage.setItem("user_id", response.data.id);
+        window.localStorage.setItem("type", response.data.type);
+        dispatch(
+          showSnackbar({ severity: "success", message: response.data.message })
+        );
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+        dispatch(showSnackbar({ severity: "error", message: error.message }));
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      });
+  };
+}
+export function LoginAdmin(formValues) {
+  return async (dispatch, getState) => {
+    dispatch(slice.actions.updateIsLoading({ isLoading: true, error: false }));
+    await axios
+      .put(
+        "/admin/login",
+        {
+          ...formValues,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response);
+        dispatch(
+          slice.actions.logIn({
+            isLoggedIn: true,
+            token: response.data.token,
+            user_id: response.data.id,
+            type: "admin"
+            ,user : response.data.fullName
+            ,email : response.data.email
+            ,Groups:  response.data.rooms
+          })
+        );
+        window.localStorage.setItem("user_id", response.data.id);
+        window.localStorage.setItem("type", response.data.type);
+        dispatch(
+          showSnackbar({ severity: "success", message: response.data.message })
+        );
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: false })
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+        dispatch(showSnackbar({ severity: "error", message: error.message }));
+        dispatch(
+          slice.actions.updateIsLoading({ isLoading: false, error: true })
+        );
+      });
+  };
+}
 export function LogoutUser() {
   return async (dispatch, getState) => {
     window.localStorage.removeItem("user_id");
